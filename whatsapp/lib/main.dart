@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:whatsapp/screens/HomeScreen.dart';
 
 void main() {
   runApp(MyApp());
@@ -11,24 +12,11 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'WhatsApp',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
-        visualDensity: VisualDensity.adaptivePlatformDensity,
+          primaryColor: Color(0xFF075E54),
+          accentColor: Color(0xFF128C7E)
       ),
-      home: Scaffold(
-        body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Icon(Icons.build),
-              SizedBox(height: 20,),
-              Text(
-                  "WhatsApp under construction!!!!"
-              ),
-            ],
-          )
-        ),
-      ),
+      debugShowCheckedModeBanner: false,
+      home: HomeScreen()
     );
   }
 }
