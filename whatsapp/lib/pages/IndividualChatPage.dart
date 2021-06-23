@@ -47,8 +47,7 @@ class _IndividualChatPageState extends State<IndividualChatPage> {
               Padding(
                 padding: const EdgeInsets.only(left: 8.0),
                 child: CircleAvatar(
-                  child:
-                  Icon(
+                  child: Icon(
                       widget.chatModel.isGroup ? Icons.group : Icons.person,
                       color: Colors.white),
                   backgroundColor: Colors.grey,
@@ -132,12 +131,10 @@ class _IndividualChatPageState extends State<IndividualChatPage> {
                     Row(
                       children: [
                         Container(
-                          width: MediaQuery
-                              .of(context)
-                              .size
-                              .width - 55,
+                          width: MediaQuery.of(context).size.width - 55,
                           child: Card(
-                            margin: EdgeInsets.only(right: 2, left: 2, bottom: 8),
+                            margin:
+                                EdgeInsets.only(right: 2, left: 2, bottom: 8),
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(25)),
                             child: TextFormField(
@@ -149,24 +146,37 @@ class _IndividualChatPageState extends State<IndividualChatPage> {
                               keyboardType: TextInputType.multiline,
                               decoration: InputDecoration(
                                   border: InputBorder.none,
-                                  prefixIcon:
-                                  IconButton(icon: Icon(Icons.emoji_emotions), onPressed: () {
-                                    // textEditingController.text = "podaPanni";
-                                    focusNode.unfocus();
-                                    focusNode.canRequestFocus = false;
-                                    setState(() {
-                                      shouldShowEmojiPicker = !shouldShowEmojiPicker;
-                                    });
-                                  },),
+                                  prefixIcon: IconButton(
+                                    icon: Icon(Icons.emoji_emotions),
+                                    onPressed: () {
+                                      // textEditingController.text = "podaPanni";
+                                      focusNode.unfocus();
+                                      focusNode.canRequestFocus = false;
+                                      setState(() {
+                                        shouldShowEmojiPicker =
+                                            !shouldShowEmojiPicker;
+                                      });
+                                    },
+                                  ),
                                   hintText: "Type a message",
                                   suffixIcon: Row(
                                     mainAxisSize: MainAxisSize.min,
                                     children: [
-                                      IconButton(icon: Icon(Icons.attach_file)),
+                                      IconButton(
+                                        icon: Icon(Icons.attach_file),
+                                        onPressed: () {
+                                          showModalBottomSheet(
+                                              backgroundColor:
+                                                  Colors.transparent,
+                                              context: context,
+                                              builder: (builder) =>
+                                                  attachmentModal());
+                                        },
+                                      ),
                                       IconButton(
                                           icon: Icon(
-                                            Icons.camera_alt,
-                                          ))
+                                        Icons.camera_alt,
+                                      ))
                                     ],
                                   ),
                                   contentPadding: EdgeInsets.all(5)),
@@ -174,14 +184,18 @@ class _IndividualChatPageState extends State<IndividualChatPage> {
                           ),
                         ),
                         Padding(
-                          padding:
-                          const EdgeInsets.only(bottom: 8, right: 2, left: 2),
+                          padding: const EdgeInsets.only(
+                              bottom: 8, right: 2, left: 2),
                           child: CircleAvatar(
                             radius: 25,
                             backgroundColor: Colors.green,
                             child: IconButton(
-                              icon: Icon(Icons.mic, color: Colors.white,),
-                              onPressed: () {},),
+                              icon: Icon(
+                                Icons.mic,
+                                color: Colors.white,
+                              ),
+                              onPressed: () {},
+                            ),
                           ),
                         )
                       ],
@@ -203,6 +217,76 @@ class _IndividualChatPageState extends State<IndividualChatPage> {
           }
           return Future.value(false);
         },
+      ),
+    );
+  }
+
+  Widget attachmentModal() {
+    return Container(
+      height: 280,
+      width: MediaQuery.of(context).size.width,
+      child: Card(
+        margin: EdgeInsets.all(20),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 20),
+          child: Column(
+            children: [
+              Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                attachmentIcon(
+                    Icons.insert_drive_file, Colors.indigo, "Document"),
+                SizedBox(
+                  width: 40,
+                ),
+                attachmentIcon(Icons.camera_alt, Colors.pink, "Camera"),
+                SizedBox(
+                  width: 40,
+                ),
+                attachmentIcon(Icons.insert_photo, Colors.purple, "Gallery"),
+              ]),
+              SizedBox(
+                height: 30,
+              ),
+              Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                attachmentIcon(Icons.headset, Colors.orange, "Audio"),
+                SizedBox(
+                  width: 40,
+                ),
+                attachmentIcon(Icons.location_pin, Colors.teal, "Loaction"),
+                SizedBox(
+                  width: 40,
+                ),
+                attachmentIcon(Icons.person, Colors.blue, "Contact"),
+              ])
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget attachmentIcon(
+      final IconData iconData, final Color color, final String iconName) {
+    return InkWell(
+      onTap: () {},
+      child: Column(
+        children: [
+          CircleAvatar(
+            radius: 30,
+            child: Icon(
+              iconData,
+              size: 30,
+              color: Colors.white,
+            ),
+            backgroundColor: color,
+          ),
+          SizedBox(
+            height: 5,
+          ),
+          Text(
+            iconName,
+            style: TextStyle(fontSize: 13),
+          ),
+        ],
       ),
     );
   }
