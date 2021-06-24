@@ -4,5 +4,6 @@ class ChatModel {
   String currentMessage;
   String time;
   bool isGroup;
-  ChatModel(this.icon, this.name, this.currentMessage, this.time, this.isGroup);
+  String status;
+  ChatModel(this.icon, this.name, this.currentMessage, this.time, this.isGroup, this.status);
 }
