@@ -174,6 +174,7 @@ class _IndividualChatPageState extends State<IndividualChatPage> {
                                         },
                                       ),
                                       IconButton(
+                                        onPressed: () {},
                                           icon: Icon(
                                         Icons.camera_alt,
                                       ))
@@ -188,7 +189,7 @@ class _IndividualChatPageState extends State<IndividualChatPage> {
                               bottom: 8, right: 2, left: 2),
                           child: CircleAvatar(
                             radius: 25,
-                            backgroundColor: Colors.green,
+                            backgroundColor: Color(0xFF075E54),
                             child: IconButton(
                               icon: Icon(
                                 Icons.mic,

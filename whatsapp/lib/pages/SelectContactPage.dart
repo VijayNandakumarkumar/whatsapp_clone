@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:whatsapp/Constants.dart';
+import 'package:whatsapp/pages/IndividualChatPage.dart';
+import 'package:whatsapp/pages/NewGroupPage.dart';
 import 'package:whatsapp/widgets/ContactCard.dart';
 import 'package:whatsapp/widgets/CustomContactCard.dart';
 
@@ -55,14 +57,32 @@ class SelectContactPage extends StatelessWidget {
       body: ListView.builder(
           itemCount: Constants.chatModels.length + 2,
           itemBuilder: (context, index) {
-            if (index == 0) {
-              return CustomContactCard(title: "New group", iconData: Icons.group_add);
-            } else if (index == 1) {
-              return CustomContactCard(title: "New contact", iconData: Icons.person_add);
-            } else {
-              return ContactCard(Constants.chatModels[index - 2]);
+            if ((index < Constants.chatModels.length) && (Constants.chatModels[index].selected)) {
+              Constants.chatModels[index].selected = false;
             }
-      }),
+            if (index == 0) {
+              return InkWell(
+                onTap: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => NewGroupPage()));
+                },
+                child: CustomContactCard(
+                    title: "New group", iconData: Icons.group_add),
+              );
+            } else if (index == 1) {
+              return CustomContactCard(
+                  title: "New contact", iconData: Icons.person_add);
+            } else {
+              return InkWell(
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => IndividualChatPage(
+                                chatModel: Constants.chatModels[index - 2])));
+                  },
+                  child: ContactCard(Constants.chatModels[index - 2]));
+            }
+          }),
     );
   }
 }

@@ -9,7 +9,6 @@ class CustomContactCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () {},
       child: ListTile(
         leading: CircleAvatar(
           radius: 23,

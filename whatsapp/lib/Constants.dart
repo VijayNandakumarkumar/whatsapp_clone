@@ -1,7 +1,7 @@
 import 'package:whatsapp/model/ChatModel.dart';
 
 class Constants {
-  static final List<ChatModel> chatModels= [
+  static List<ChatModel> chatModels= [
     ChatModel("", "Vijay", "Hello, there mate", "18:00", false, "Hey I use whatsApp"),
     ChatModel("", "Vinesh", "Hello, there mate", "19:00", false, "Hey I use whatsApp"),
     ChatModel("", "Kumar's Family", "Hello, there mate", "18:00", true, "Hey I use whatsApp"),
@@ -11,4 +11,5 @@ class Constants {
     ChatModel("", "Selvi", "Hello, there mate", "23:00", false, "Hey I use whatsApp"),
     ChatModel("", "Anamika", "Hello, there mate", "24:00", false, "Hey I use whatsApp"),
   ];
+  static List<List<ChatModel>> groups;
 }
