@@ -1,6 +1,7 @@
 import 'package:emoji_picker/emoji_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:whatsapp/model/ChatModel.dart';
+import 'package:whatsapp/widgets/EmojiPicker.dart';
 
 class IndividualChatPage extends StatefulWidget {
   final ChatModel chatModel;
@@ -201,7 +202,7 @@ class _IndividualChatPageState extends State<IndividualChatPage> {
                         )
                       ],
                     ),
-                    shouldShowEmojiPicker ? emojiPicker() : Container(),
+                    shouldShowEmojiPicker ? emojiPicker(textEditingController) : Container(),
                   ],
                 ),
               ),
@@ -290,14 +291,5 @@ class _IndividualChatPageState extends State<IndividualChatPage> {
         ],
       ),
     );
-  }
-
-  Widget emojiPicker() {
-    return EmojiPicker(
-        rows: 4,
-        columns: 7,
-        onEmojiSelected: (emoji, category) {
-          textEditingController.text = textEditingController.text + emoji.emoji;
-        });
   }
 }

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:whatsapp/Constants.dart';
 import 'package:whatsapp/model/ChatModel.dart';
+import 'package:whatsapp/screens/HomeScreen.dart';
 
 class CreateGroupPage extends StatelessWidget {
   final List<ChatModel> chatModels;
@@ -148,10 +150,16 @@ class CreateGroupPage extends StatelessWidget {
                 child: CircleAvatar(
                   radius: 28,
                   backgroundColor: Colors.green,
-                  child: Icon(
-                    Icons.done,
+                  child: IconButton(
+                    icon: Icon(Icons.done,
                     color: Colors.white,
                     size: 18,
+                    ), onPressed: () {
+                      Constants.chatModels.add(ChatModel("", textEditingController.text, "Hey bro", "18:00", true, ""));
+                      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)  {
+                        return HomeScreen();
+                      }));
+                  },
                   ),
                 ),
               ),
