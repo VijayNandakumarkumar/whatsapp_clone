@@ -5,13 +5,14 @@ import 'package:whatsapp/pages/IndividualChatPage.dart';
 class ChatCard extends StatelessWidget {
 
   final ChatModel chatModel;
-  const ChatCard({Key key, this.chatModel}) : super(key: key);
+  final int sourceId;
+  const ChatCard({Key key, this.chatModel, this.sourceId}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        Navigator.push(context, MaterialPageRoute(builder: (context) => IndividualChatPage(chatModel: chatModel)));
+        Navigator.push(context, MaterialPageRoute(builder: (context) => IndividualChatPage(chatModel: chatModel, sourceId: sourceId,)));
       },
       child: Column(
         children: [

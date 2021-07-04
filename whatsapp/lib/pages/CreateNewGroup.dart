@@ -161,7 +161,8 @@ class _CreateNewGroupState extends State<CreateNewGroup> {
                               "Hello, there mate",
                               "18:00",
                               true,
-                              "status");
+                              "status",
+                            Constants.chatModels.length + 1,);
                           Constants.chatModels.insert(0, newGroup);
                           Navigator.pop(context);
                           Navigator.pop(context);

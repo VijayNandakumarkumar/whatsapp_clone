@@ -155,7 +155,7 @@ class CreateGroupPage extends StatelessWidget {
                     color: Colors.white,
                     size: 18,
                     ), onPressed: () {
-                      Constants.chatModels.add(ChatModel("", textEditingController.text, "Hey bro", "18:00", true, ""));
+                      Constants.chatModels.add(ChatModel("", textEditingController.text, "Hey bro", "18:00", true, "", Constants.chatModels.length + 1,));
                       Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)  {
                         return HomeScreen();
                       }));

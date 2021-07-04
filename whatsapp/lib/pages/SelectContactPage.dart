@@ -6,6 +6,10 @@ import 'package:whatsapp/widgets/ContactCard.dart';
 import 'package:whatsapp/widgets/CustomContactCard.dart';
 
 class SelectContactPage extends StatelessWidget {
+  final int sourceId;
+
+  const SelectContactPage({this.sourceId});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -57,13 +61,15 @@ class SelectContactPage extends StatelessWidget {
       body: ListView.builder(
           itemCount: Constants.chatModels.length + 2,
           itemBuilder: (context, index) {
-            if ((index < Constants.chatModels.length) && (Constants.chatModels[index].selected)) {
+            if ((index < Constants.chatModels.length) &&
+                (Constants.chatModels[index].selected)) {
               Constants.chatModels[index].selected = false;
             }
             if (index == 0) {
               return InkWell(
                 onTap: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => NewGroupPage()));
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => NewGroupPage()));
                 },
                 child: CustomContactCard(
                     title: "New group", iconData: Icons.group_add),
@@ -72,15 +78,27 @@ class SelectContactPage extends StatelessWidget {
               return CustomContactCard(
                   title: "New contact", iconData: Icons.person_add);
             } else {
-              return InkWell(
-                  onTap: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => IndividualChatPage(
-                                chatModel: Constants.chatModels[index - 2])));
-                  },
-                  child: ContactCard(Constants.chatModels[index - 2]));
+              if (Constants.chatModels[index - 2].id != sourceId) {
+                print("YEst case");
+                print("The sourc eid " + sourceId.toString());
+                print(Constants.chatModels[index - 2].id);
+                print(Constants.chatModels[index - 2].name);
+                return InkWell(
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => IndividualChatPage(
+                                  chatModel: Constants.chatModels[index - 2])));
+                    },
+                    child: ContactCard(Constants.chatModels[index - 2]));
+              } else {
+                print("no case");
+                print("The sourc eid " + sourceId.toString());
+                print(Constants.chatModels[index - 2].id);
+                print(Constants.chatModels[index - 2].name);
+                return Container();
+              }
             }
           }),
     );

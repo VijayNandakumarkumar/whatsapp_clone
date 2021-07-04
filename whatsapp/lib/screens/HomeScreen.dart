@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:whatsapp/pages/CameraPage.dart';
 import 'package:whatsapp/pages/ChatPage.dart';
 import 'package:whatsapp/screens/CameraScreen.dart';
 
 class HomeScreen extends StatefulWidget {
+  final int sourceId;
+  const HomeScreen({this.sourceId});
+
   @override
   _HomeScreenState createState() => _HomeScreenState();
 }
@@ -63,8 +67,8 @@ class _HomeScreenState extends State<HomeScreen>
         ),
       ),
       body: TabBarView(controller: _controller, children: [
-        CameraScreen(),
-        ChatPage(),
+        CameraPage(),
+        ChatPage(sourceId: widget.sourceId),
         Center(
             child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
