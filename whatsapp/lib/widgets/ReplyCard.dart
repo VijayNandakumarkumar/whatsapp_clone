@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 
 class ReplyCard extends StatelessWidget {
   final String message;
-  const ReplyCard({this.message});
+  final String time;
+  const ReplyCard({this.message, this.time});
   @override
   Widget build(BuildContext context) {
     return ConstrainedBox(
@@ -32,7 +33,7 @@ class ReplyCard extends StatelessWidget {
                     right: 10,
                     child:
                         Text(
-                          "20:00",
+                          time,
                           style:
                           TextStyle(fontSize: 13, color: Colors.grey[600]),
                         )

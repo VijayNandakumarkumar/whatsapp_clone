@@ -26,6 +26,7 @@ class _IndividualChatPageState extends State<IndividualChatPage> {
   IO.Socket socket;
   bool showSendButton = false;
   List<MessageModel> messages = [];
+  ScrollController _scrollController = ScrollController();
 
   @override
   void initState() {
@@ -42,7 +43,7 @@ class _IndividualChatPageState extends State<IndividualChatPage> {
   }
 
   void setMessage(final String message, final String source) {
-    MessageModel messageModel = new MessageModel(source, message, "18:00");
+    MessageModel messageModel = new MessageModel(source, message, DateTime.now().toString().substring(10, 16));
     setState(() {
       messages.add(messageModel);
     });
@@ -171,143 +172,167 @@ class _IndividualChatPageState extends State<IndividualChatPage> {
             ),
           ],
         ),
-        body: WillPopScope(
-          child: Stack(
-            children: [
-              Container(
-                height: MediaQuery.of(context).size.height - 145,
-                child: ListView.builder(
-                    itemCount: messages.length,
-                    itemBuilder: (context, index) {
-                      if (messages[index].type == "source") {
-                        return MessageCard(message: messages[index].message,);
-                      } else {
-                        return ReplyCard(message: messages[index].message);
-                      }
-                    }),
-              ),
-              Container(
-                child: Align(
-                  alignment: Alignment.bottomCenter,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      Row(
+        body: Container(
+          height: MediaQuery.of(context).size.height,
+          width: MediaQuery.of(context).size.width,
+          child: WillPopScope(
+            child: Column(
+              children: [
+                Expanded(
+                  // height: MediaQuery.of(context).size.height - 145,
+                  child: ListView.builder(
+                      controller: _scrollController,
+                      itemCount: messages.length + 1,
+                      itemBuilder: (context, index) {
+                        if (index == messages.length) {
+                          return Container(
+                            height: 70,
+                          );
+                        }
+                        if (messages[index].type == "source") {
+                          return MessageCard(
+                            message: messages[index].message,
+                            time: messages[index].time,
+                          );
+                        } else {
+                          return ReplyCard(
+                            message: messages[index].message,
+                            time: messages[index].time,
+                          );
+                        }
+                      }),
+                ),
+                Container(
+                  child: Align(
+                    alignment: Alignment.bottomCenter,
+                    child: Container(
+                      height: 70,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.end,
                         children: [
-                          Container(
-                            width: MediaQuery.of(context).size.width - 55,
-                            child: Card(
-                              margin:
-                                  EdgeInsets.only(right: 2, left: 2, bottom: 8),
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(25)),
-                              child: TextFormField(
-                                maxLines: 5,
-                                minLines: 1,
-                                controller: textEditingController,
-                                focusNode: focusNode,
-                                textAlignVertical: TextAlignVertical.center,
-                                keyboardType: TextInputType.multiline,
-                                onChanged: (value) {
-                                  if (value.length > 0) {
-                                    setState(() {
-                                      showSendButton = true;
-                                    });
-                                  } else {
-                                    setState(() {
-                                      showSendButton = false;
-                                    });
-                                  }
-                                },
-                                decoration: InputDecoration(
-                                    border: InputBorder.none,
-                                    prefixIcon: IconButton(
-                                      icon: Icon(Icons.emoji_emotions),
-                                      onPressed: () {
-                                        // textEditingController.text = "podaPanni";
-                                        focusNode.unfocus();
-                                        focusNode.canRequestFocus = false;
+                          Row(
+                            children: [
+                              Container(
+                                width: MediaQuery.of(context).size.width - 55,
+                                child: Card(
+                                  margin: EdgeInsets.only(
+                                      right: 2, left: 2, bottom: 8),
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(25)),
+                                  child: TextFormField(
+                                    maxLines: 5,
+                                    minLines: 1,
+                                    controller: textEditingController,
+                                    focusNode: focusNode,
+                                    textAlignVertical: TextAlignVertical.center,
+                                    keyboardType: TextInputType.multiline,
+                                    onChanged: (value) {
+                                      if (value.length > 0) {
                                         setState(() {
-                                          shouldShowEmojiPicker =
-                                              !shouldShowEmojiPicker;
+                                          showSendButton = true;
                                         });
-                                      },
-                                    ),
-                                    hintText: "Type a message",
-                                    suffixIcon: Row(
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: [
-                                        IconButton(
-                                          icon: Icon(Icons.attach_file),
+                                      } else {
+                                        setState(() {
+                                          showSendButton = false;
+                                        });
+                                      }
+                                    },
+                                    decoration: InputDecoration(
+                                        border: InputBorder.none,
+                                        prefixIcon: IconButton(
+                                          icon: Icon(Icons.emoji_emotions),
                                           onPressed: () {
-                                            showModalBottomSheet(
-                                                backgroundColor:
-                                                    Colors.transparent,
-                                                context: context,
-                                                builder: (builder) =>
-                                                    attachmentModal());
+                                            // textEditingController.text = "podaPanni";
+                                            focusNode.unfocus();
+                                            focusNode.canRequestFocus = false;
+                                            setState(() {
+                                              shouldShowEmojiPicker =
+                                                  !shouldShowEmojiPicker;
+                                            });
                                           },
                                         ),
-                                        IconButton(
-                                            onPressed: () {
-                                              Navigator.push(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                      builder: (builder) =>
-                                                          CameraScreen()));
-                                            },
-                                            icon: Icon(
-                                              Icons.camera_alt,
-                                            ))
-                                      ],
-                                    ),
-                                    contentPadding: EdgeInsets.all(5)),
-                              ),
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(
-                                bottom: 8, right: 2, left: 2),
-                            child: CircleAvatar(
-                              radius: 25,
-                              backgroundColor: Color(0xFF075E54),
-                              child: IconButton(
-                                icon: Icon(
-                                  showSendButton ? Icons.send : Icons.mic,
-                                  color: Colors.white,
+                                        hintText: "Type a message",
+                                        suffixIcon: Row(
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: [
+                                            IconButton(
+                                              icon: Icon(Icons.attach_file),
+                                              onPressed: () {
+                                                showModalBottomSheet(
+                                                    backgroundColor:
+                                                        Colors.transparent,
+                                                    context: context,
+                                                    builder: (builder) =>
+                                                        attachmentModal());
+                                              },
+                                            ),
+                                            IconButton(
+                                                onPressed: () {
+                                                  Navigator.push(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                          builder: (builder) =>
+                                                              CameraScreen()));
+                                                },
+                                                icon: Icon(
+                                                  Icons.camera_alt,
+                                                ))
+                                          ],
+                                        ),
+                                        contentPadding: EdgeInsets.all(5)),
+                                  ),
                                 ),
-                                onPressed: () {
-                                  sendMessage(textEditingController.text,
-                                      widget.sourceId, widget.chatModel.id);
-                                  textEditingController.clear();
-                                  setState(() {
-                                    showSendButton = false;
-                                  });
-                                },
                               ),
-                            ),
-                          )
+                              Padding(
+                                padding: const EdgeInsets.only(
+                                    bottom: 8, right: 2, left: 2),
+                                child: CircleAvatar(
+                                  radius: 25,
+                                  backgroundColor: Color(0xFF075E54),
+                                  child: IconButton(
+                                    icon: Icon(
+                                      showSendButton ? Icons.send : Icons.mic,
+                                      color: Colors.white,
+                                    ),
+                                    onPressed: () {
+                                      _scrollController.animateTo(
+                                          _scrollController
+                                              .position.maxScrollExtent,
+                                          duration: Duration(milliseconds: 300),
+                                          curve: Curves.easeOut);
+                                      sendMessage(textEditingController.text,
+                                          widget.sourceId, widget.chatModel.id);
+                                      textEditingController.clear();
+                                      setState(() {
+                                        showSendButton = false;
+                                      });
+                                    },
+                                  ),
+                                ),
+                              )
+                            ],
+                          ),
+                          shouldShowEmojiPicker
+                              ? emojiPicker(textEditingController)
+                              : Container(),
                         ],
                       ),
-                      shouldShowEmojiPicker
-                          ? emojiPicker(textEditingController)
-                          : Container(),
-                    ],
+                    ),
                   ),
-                ),
-              )
-            ],
+                )
+              ],
+            ),
+            onWillPop: () {
+              if (shouldShowEmojiPicker) {
+                setState(() {
+                  shouldShowEmojiPicker = false;
+                });
+              } else {
+                Navigator.pop(context);
+              }
+              return Future.value(false);
+            },
           ),
-          onWillPop: () {
-            if (shouldShowEmojiPicker) {
-              setState(() {
-                shouldShowEmojiPicker = false;
-              });
-            } else {
-              Navigator.pop(context);
-            }
-            return Future.value(false);
-          },
         ),
       ),
     ]);

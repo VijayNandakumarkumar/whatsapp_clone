@@ -1,3 +1,4 @@
+const { response } = require("express");
 const express = require("express");
 const http = require("http");
 const app = express();
@@ -29,6 +30,10 @@ io.on("connection", (socket) =>{
         }
     });
 } );
+
+app.route("/check").get((request, response) => {
+    return response.json("Your app is running successfully.")
+});
 
 server.listen(port, "0.0.0.0", () => {
     console.log("Server started");
