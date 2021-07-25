@@ -25,13 +25,19 @@ class _IndividualChatPageState extends State<IndividualChatPage> {
   TextEditingController textEditingController = TextEditingController();
   IO.Socket socket;
   bool showSendButton = false;
+  List<MessageModel> oldMessages;
   List<MessageModel> messages = [];
   ScrollController _scrollController = ScrollController();
+  String chatMessageId;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    chatMessageId = widget.sourceId.toString() + widget.chatModel.id.toString();
+    print("chatMessageId " + chatMessageId);
+    oldMessages = Constants.messageModels[chatMessageId];
+    messages = oldMessages == null ? [] : oldMessages;
     connect();
     focusNode.addListener(() {
       if (focusNode.hasFocus) {
@@ -40,17 +46,28 @@ class _IndividualChatPageState extends State<IndividualChatPage> {
         });
       }
     });
-  }
-
-  void setMessage(final String message, final String source) {
-    MessageModel messageModel = new MessageModel(source, message, DateTime.now().toString().substring(10, 16));
-    setState(() {
-      messages.add(messageModel);
+    Future.delayed(Duration(milliseconds: 200), () {
+      _scrollController.animateTo(
+        _scrollController.position.maxScrollExtent,
+        // Offset passed by the parent
+        duration: Duration(milliseconds: 300),
+        curve: Curves.easeOut,
+      );
     });
   }
 
+  void setMessage(final String message, final String source) {
+    MessageModel messageModel = new MessageModel(
+        source, message, DateTime.now().toString().substring(10, 16));
+    setState(() {
+      messages.add(messageModel);
+    });
+    print(messages.length);
+  }
+
   void connect() {
-    socket = IO.io("http://192.168.1.13:5000", <String, dynamic>{
+    socket =
+        IO.io("https://historic-arches-59532.herokuapp.com/", <String, dynamic>{
       "transports": ["websocket"],
       "autoconnet": false,
     });
@@ -62,8 +79,12 @@ class _IndividualChatPageState extends State<IndividualChatPage> {
       socket.on(
         "message",
         (data) {
-          print(data["message"]);
-          setMessage(data["message"], "destination");
+          // print(data);
+          _scrollController.animateTo(
+              _scrollController.position.maxScrollExtent,
+              duration: Duration(milliseconds: 300),
+              curve: Curves.easeOut);
+          setMessage(data, "destination");
         },
       );
     });
@@ -328,6 +349,8 @@ class _IndividualChatPageState extends State<IndividualChatPage> {
                   shouldShowEmojiPicker = false;
                 });
               } else {
+                Constants.messageModels[chatMessageId] = messages;
+                print("is message model empty after insersetions "+ Constants.messageModels.isEmpty.toString());
                 Navigator.pop(context);
               }
               return Future.value(false);

@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:whatsapp/pages/CameraPage.dart';
 import 'package:whatsapp/screens/HomeScreen.dart';
 import 'package:whatsapp/screens/LoginScreen.dart';
+import 'package:whatsapp/screens/WelcomeScreen.dart';
+
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -22,6 +24,7 @@ class MyApp extends StatelessWidget {
             primaryColor: Color(0xFF075E54),
             accentColor: Color(0xFF128C7E)),
         debugShowCheckedModeBanner: false,
-        home: LoginScreen());
+        home: WelcomeScreen());
+        // home: LoginScreen());
   }
 }

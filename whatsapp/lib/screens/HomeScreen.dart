@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:whatsapp/pages/CameraPage.dart';
 import 'package:whatsapp/pages/ChatPage.dart';
 import 'package:whatsapp/screens/CameraScreen.dart';
+import 'package:whatsapp/screens/StatusScreen.dart';
 
 class HomeScreen extends StatefulWidget {
   final int sourceId;
@@ -69,18 +70,7 @@ class _HomeScreenState extends State<HomeScreen>
       body: TabBarView(controller: _controller, children: [
         CameraPage(),
         ChatPage(sourceId: widget.sourceId),
-        Center(
-            child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Icon(Icons.build),
-            SizedBox(
-              height: 20,
-            ),
-            Text("WhatsApp under construction!!!!"),
-          ],
-        )),
+        StatusScreen(),
         Center(
             child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
